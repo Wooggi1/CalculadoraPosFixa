@@ -1,23 +1,27 @@
-#include <stdio.h>
-#include <stdlib.h>
+#ifndef PILHA_H
+#define PILHA_H
 
-typedef struct Item {
-    float num;
-    Item *prox;
+#define ERRO -1
+#define SIM 1
+#define NAO 0
+
+typedef struct Item
+{
+    int chave;
+    struct Item *Proximo;
 } Item;
 
-typedef struct Pilha {
-    Item *topo;
+typedef struct Pilha
+{
+    Item *Topo;
 } Pilha;
 
-int estavazia(Pilha a);
-Pilha criarPilha();
-void destruirPilha(Pilha a);
-float somar(Pilha a);
-float subtrair(Pilha a);
-float multiplicar(Pilha a);
-float dividir(Pilha a);
-float logaritmo(Pilha a);
-float cosseno(Pilha a);
-float seno(Pilha a);
-float tangente(Pilha a);
+Pilha *criarPilha();
+int estaVazia(Pilha *p);
+Item *criarItem(int x);
+void empilhar(Pilha *p, int chave);
+int desempilhar(Pilha *p);
+int topo(Pilha *p);
+void liberarPilha(Pilha *p);
+
+#endif
