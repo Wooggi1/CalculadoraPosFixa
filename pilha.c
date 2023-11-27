@@ -1,6 +1,8 @@
 #include "pilha.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
+#include <string.h>
 
 Pilha *criarPilha()
 {
@@ -73,4 +75,19 @@ void liberarPilha(Pilha *p)
         desempilhar(p);
     }
     free(p);
+}
+
+int aplicarFuncao(char* funcao, int operando) {
+    if (strcmp(funcao, "log") == 0) {
+        return (int)log10(operando);
+    } else if (strcmp(funcao, "sen") == 0) {
+        return (int)sin(operando);
+    } else if (strcmp(funcao, "cos") == 0) {
+        return (int)cos(operando);
+    } else if (strcmp(funcao, "tan") == 0) {
+        return (int)tan(operando);
+    } else {
+        printf("Função desconhecida: %s\n", funcao);
+        exit(EXIT_FAILURE);
+    }
 }
