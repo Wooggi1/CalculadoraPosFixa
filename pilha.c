@@ -24,7 +24,7 @@ int estaVazia(Pilha *p)
         return NAO;
 }
 
-Item *criarItem(int x)
+Item *criarItem(float x)
 {
     Item *novoItem = (Item *)malloc(sizeof(Item));
     if (novoItem == NULL)
@@ -37,14 +37,14 @@ Item *criarItem(int x)
     return novoItem;
 }
 
-void empilhar(Pilha *p, int chave)
+void empilhar(Pilha *p, float chave)
 {
     Item *novoItem = criarItem(chave);
     novoItem->Proximo = p->Topo;
     p->Topo = novoItem;
 }
 
-int desempilhar(Pilha *p)
+float desempilhar(Pilha *p)
 {
     if (estaVazia(p))
     {
@@ -52,13 +52,13 @@ int desempilhar(Pilha *p)
         exit(EXIT_FAILURE);
     }
     Item *temp = p->Topo;
-    int chave = temp->chave;
+    float chave = temp->chave;
     p->Topo = temp->Proximo;
     free(temp);
     return chave;
 }
 
-int topo(Pilha *p)
+float topo(Pilha *p)
 {
     if (estaVazia(p))
     {
@@ -77,15 +77,15 @@ void liberarPilha(Pilha *p)
     free(p);
 }
 
-int aplicarFuncao(char* funcao, int operando) {
+float aplicarFuncao(char* funcao, float operando) {
     if (strcmp(funcao, "log") == 0) {
-        return (int)log10(operando);
+        return (float)log10(operando);
     } else if (strcmp(funcao, "sen") == 0) {
-        return (int)sin(operando);
+        return (float)sin(operando);
     } else if (strcmp(funcao, "cos") == 0) {
-        return (int)cos(operando);
+        return (float)cos(operando);
     } else if (strcmp(funcao, "tan") == 0) {
-        return (int)tan(operando);
+        return (float)tan(operando);
     } else {
         printf("Função desconhecida: %s\n", funcao);
         exit(EXIT_FAILURE);

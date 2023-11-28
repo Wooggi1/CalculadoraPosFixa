@@ -7,7 +7,7 @@
 
 typedef struct Item
 {
-    int chave;
+    float chave;
     struct Item *Proximo;
 } Item;
 
@@ -18,11 +18,11 @@ typedef struct Pilha
 
 Pilha *criarPilha();
 int estaVazia(Pilha *p);
-Item *criarItem(int x);
-void empilhar(Pilha *p, int chave);
-int desempilhar(Pilha *p);
-int topo(Pilha *p);
+Item *criarItem(float x);
+void empilhar(Pilha *p, float chave);
+float desempilhar(Pilha *p);
+float topo(Pilha *p);
 void liberarPilha(Pilha *p);
-int aplicarFuncao(char* funcao, int operando);
+float aplicarFuncao(char* funcao, float operando);
 
 #endif
