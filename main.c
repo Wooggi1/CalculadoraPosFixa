@@ -5,15 +5,14 @@
 #include <math.h>
 
 int main() {
-    char entrada[100] = "2 3 + log 5 /"; 
+    char entrada[100] = "3 4 + 5 tan *"; 
 
     Pilha *pilhaOperandos = criarPilha();
 
     for (int i = 0; entrada[i] != '\0'; i++) {
-        if (isdigit(entrada[i])) {
-            float operando = 0;
-            while (isdigit(entrada[i])) {
-                operando = operando * 10 + (entrada[i] - '0');
+        if (isdigit(entrada[i]) || (entrada[i] == '.' && isdigit(entrada[i + 1]))) {
+            double operando = strtod(&entrada[i], NULL);
+            while (isdigit(entrada[i]) || entrada[i] == '.') {
                 i++;
             }
             empilhar(pilhaOperandos, operando);
