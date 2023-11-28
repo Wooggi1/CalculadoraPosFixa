@@ -23,7 +23,6 @@ void empilhar(Pilha *p, int chave);
 int desempilhar(Pilha *p);
 int topo(Pilha *p);
 void liberarPilha(Pilha *p);
-float somar(Pilha *p);
 int aplicarFuncao(char* funcao, int operando);
 
 #endif
