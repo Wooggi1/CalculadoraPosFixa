@@ -16,7 +16,36 @@ Pilha *criarPilha()
     p->Topo = NULL;
     return p;
 }
+float aplicarFuncao(char *funcao, Pilha *p)
+{
+    float operando;
+    if (strcmp(funcao, "log") == 0 || strcmp(funcao, "sen") == 0 || strcmp(funcao, "cos") == 0 || strcmp(funcao, "tan") == 0)
+    {
+        operando = desempilhar(p);
+    }
 
+    if (strcmp(funcao, "log") == 0)
+    {
+        return (float)log10(operando);
+    }
+    else if (strcmp(funcao, "sen") == 0)
+    {
+        return (float)sin(operando);
+    }
+    else if (strcmp(funcao, "cos") == 0)
+    {
+        return (float)cos(operando);
+    }
+    else if (strcmp(funcao, "tan") == 0)
+    {
+        return (float)tan(operando);
+    }
+    else
+    {
+        printf("Função desconhecida: %s\n", funcao);
+        exit(ERRO);
+    }
+}
 int estaVazia(Pilha *p)
 {
     return p->Topo == NULL ? SIM : NAO;
@@ -73,88 +102,4 @@ void liberarPilha(Pilha *p)
         desempilhar(p);
     }
     free(p);
-}
-
-float aplicarFuncao(char *funcao, Pilha *p)
-{
-    if (strcmp(funcao, "log") == 0)
-    {
-        return (float)log10(topo(p));
-    }
-    else if (strcmp(funcao, "sin") == 0)
-    {
-        return (float)sin(topo(p) * (M_PI / 180.0)); // Converte graus para radianos
-    }
-    else if (strcmp(funcao, "cos") == 0)
-    {
-        return (float)cos(topo(p) * (M_PI / 180.0)); // Converte graus para radianos
-    }
-    else if (strcmp(funcao, "tan") == 0)
-    {
-        return (float)tan(topo(p) * (M_PI / 180.0)); // Converte graus para radianos
-    }
-    else
-    {
-        printf("Função desconhecida: %s\n", funcao);
-        exit(ERRO);
-    }
-}
-
-char *postFixToInfix(char entrada[])
-{
-    Pilha *temp = criarPilha();
-    char *saida = (char *)malloc(100 * sizeof(char));
-
-    if (saida == NULL)
-    {
-        fprintf(stderr, "Memory allocation failed\n");
-        exit(ERRO);
-    }
-
-    saida[0] = '\0'; // Inicialize a string
-
-    for (int i = 0; entrada[i] != '\0'; i++)
-    {
-        if (isdigit(entrada[i]) || (entrada[i] == '.' && isdigit(entrada[i + 1])))
-        {
-            double operando = strtod(&entrada[i], NULL);
-            while (isdigit(entrada[i]) || entrada[i] == '.')
-            {
-                i++;
-            }
-            empilhar(temp, operando);
-
-            char temporaria[100];
-            sprintf(temporaria, "%.2f ", operando);
-            strcat(saida, temporaria);
-        }
-        else if (isalpha(entrada[i]))
-        {
-            char funcao[5] = {0}; // Aumente o tamanho para acomodar "sen", "cos", "tan", etc.
-            int j = 0;
-            while (isalpha(entrada[i]) && j < 4)
-            {
-                funcao[j++] = entrada[i++];
-            }
-            char temporaria[100];
-            sprintf(temporaria, "%s(%.2f) ", funcao, desempilhar(temp));
-            strcat(saida, temporaria);
-        }
-        else if (entrada[i] == '+' || entrada[i] == '-' || entrada[i] == '*' || entrada[i] == '/' || entrada[i] == '^')
-        {
-            float operando2 = desempilhar(temp);
-            float operando1 = desempilhar(temp);
-
-            char temporario2[100];
-            sprintf(temporario2, "(%.2f %c %.2f) ", operando1, entrada[i], operando2);
-            strcat(saida, temporario2);
-
-            empilhar(temp, operando1);
-            empilhar(temp, operando2);
-        }
-    }
-
-    liberarPilha(temp);
-
-    return saida;
 }
