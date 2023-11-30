@@ -23,6 +23,6 @@ void empilhar(Pilha *p, float chave);
 float desempilhar(Pilha *p);
 float topo(Pilha *p);
 void liberarPilha(Pilha *p);
-float aplicarFuncao(char* funcao, float operando);
-char* postFixToInfix(char *entrada);
+float aplicarFuncao(char *funcao, float operando);
+char *postFixToInfix(char *entrada);
 #endif
