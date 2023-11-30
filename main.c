@@ -6,7 +6,9 @@
 #include <string.h>
 
 int main() {
-    char entrada[100] = "3 4 + 5 tan *"; 
+    char entrada[100];
+    printf("Digite a expressao: ");
+    fgets(entrada, 100, stdin); 
 
     Pilha *pilhaOperandos = criarPilha();
 
