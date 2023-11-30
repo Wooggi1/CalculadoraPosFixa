@@ -5,8 +5,6 @@
 #include <string.h>
 #include <ctype.h>
 
-#define MAX_SIZE 100
-
 Pilha *criarPilha()
 {
     Pilha *p = (Pilha *)malloc(sizeof(Pilha));
@@ -21,10 +19,7 @@ Pilha *criarPilha()
 
 int estaVazia(Pilha *p)
 {
-    if (p->Topo == NULL)
-        return SIM;
-    else
-        return NAO;
+    return p->Topo == NULL ? SIM : NAO;
 }
 
 Item *criarItem(float x)
@@ -52,7 +47,7 @@ float desempilhar(Pilha *p)
     if (estaVazia(p))
     {
         printf("Erro: Pilha vazia, não é possível desempilhar.\n");
-        exit(EXIT_FAILURE);
+        exit(ERRO);
     }
     Item *temp = p->Topo;
     float chave = temp->chave;
@@ -66,7 +61,7 @@ float topo(Pilha *p)
     if (estaVazia(p))
     {
         printf("Erro: Pilha vazia, não há elementos para visualizar.\n");
-        exit(EXIT_FAILURE);
+        exit(ERRO);
     }
     return p->Topo->chave;
 }
@@ -80,28 +75,28 @@ void liberarPilha(Pilha *p)
     free(p);
 }
 
-float aplicarFuncao(char *funcao, float operando)
+float aplicarFuncao(char *funcao, Pilha *p)
 {
     if (strcmp(funcao, "log") == 0)
     {
-        return (float)log10(operando);
+        return (float)log10(topo(p));
     }
-    else if (strcmp(funcao, "sen") == 0)
+    else if (strcmp(funcao, "sin") == 0)
     {
-        return (float)sin(operando);
+        return (float)sin(topo(p) * (M_PI / 180.0)); // Converte graus para radianos
     }
     else if (strcmp(funcao, "cos") == 0)
     {
-        return (float)cos(operando);
+        return (float)cos(topo(p) * (M_PI / 180.0)); // Converte graus para radianos
     }
     else if (strcmp(funcao, "tan") == 0)
     {
-        return (float)tan(operando);
+        return (float)tan(topo(p) * (M_PI / 180.0)); // Converte graus para radianos
     }
     else
     {
         printf("Função desconhecida: %s\n", funcao);
-        exit(1);
+        exit(ERRO);
     }
 }
 
@@ -113,7 +108,7 @@ char *postFixToInfix(char entrada[])
     if (saida == NULL)
     {
         fprintf(stderr, "Memory allocation failed\n");
-        exit(EXIT_FAILURE);
+        exit(ERRO);
     }
 
     saida[0] = '\0'; // Inicialize a string
@@ -135,9 +130,9 @@ char *postFixToInfix(char entrada[])
         }
         else if (isalpha(entrada[i]))
         {
-            char funcao[4] = {0};
+            char funcao[5] = {0}; // Aumente o tamanho para acomodar "sen", "cos", "tan", etc.
             int j = 0;
-            while (isalpha(entrada[i]) && j < 3)
+            while (isalpha(entrada[i]) && j < 4)
             {
                 funcao[j++] = entrada[i++];
             }
