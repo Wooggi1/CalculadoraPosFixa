@@ -5,6 +5,10 @@
 #include <math.h>
 #include <string.h>
 
+// Adicionar declarações de funções
+float aplicarFuncao(char *funcao, Pilha *p);
+char *postFixToInfix(char entrada[]);
+
 int main()
 {
     char entrada[100];
@@ -12,9 +16,6 @@ int main()
     fgets(entrada, 100, stdin);
 
     Pilha *pilhaOperandos = criarPilha();
-
-    // Mover a declaração da variável result para o início da função main
-    double result;
 
     for (int i = 0; entrada[i] != '\0'; i++)
     {
@@ -29,19 +30,17 @@ int main()
         }
         else if (isalpha(entrada[i]))
         {
-            float operando = desempilhar(pilhaOperandos);
-            char funcao[4] = {0};
+            char funcao[5] = {0}; // Aumente o tamanho para 5 para acomodar "sen", "cos", "tan", etc.
             int j = 0;
-            while (isalpha(entrada[i]) && j < 3)
+            while (isalpha(entrada[i]) && j < 4)
             {
                 funcao[j++] = entrada[i++];
             }
-            empilhar(pilhaOperandos, aplicarFuncao(funcao, operando));
+            empilhar(pilhaOperandos, aplicarFuncao(funcao, pilhaOperandos));
             i--;
         }
         else if (entrada[i] == '+' || entrada[i] == '-' || entrada[i] == '*' || entrada[i] == '/' || entrada[i] == '^')
         {
-            // Remover a declaração da variável funcao2, pois ela não é usada
             float operando2 = desempilhar(pilhaOperandos);
             float operando1 = desempilhar(pilhaOperandos);
 
@@ -60,19 +59,16 @@ int main()
                 empilhar(pilhaOperandos, operando1 / operando2);
                 break;
             case '^':
-                result = pow((double)operando1, (double)operando2);
-                empilhar(pilhaOperandos, result);
+                empilhar(pilhaOperandos, pow((double)operando1, (double)operando2));
                 break;
             }
         }
     }
 
-    char saida[100];
+    char *saida = postFixToInfix(entrada);
     float resultado = topo(pilhaOperandos);
     printf("Resultado: %.3f\n", resultado);
-    printf("Expressao infixa: ");
-    strcpy(saida, postFixToInfix(entrada));
-    puts(saida);
+    printf("Expressao infixa: %s\n", saida);
 
     liberarPilha(pilhaOperandos);
 
