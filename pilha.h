@@ -24,5 +24,5 @@ float desempilhar(Pilha *p);
 float topo(Pilha *p);
 void liberarPilha(Pilha *p);
 float aplicarFuncao(char* funcao, float operando);
-
+char* postFixToInfix(char *entrada);
 #endif

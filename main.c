@@ -3,6 +3,7 @@
 #include "pilha.h"
 #include <ctype.h>
 #include <math.h>
+#include <string.h>
 
 int main() {
     char entrada[100] = "3 4 + 5 tan *"; 
@@ -51,9 +52,12 @@ int main() {
         }
     }
 
-    
+    char saida[100];
     float resultado = topo(pilhaOperandos);
     printf("Resultado: %.3f\n", resultado);
+    printf("Expressao infixa: ");
+    strcpy(saida, postFixToInfix(entrada));
+    puts(saida);
 
     liberarPilha(pilhaOperandos);
 
