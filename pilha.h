@@ -11,7 +11,7 @@ typedef struct Item
     struct Item *Proximo;
 } Item;
 
-typedef struct Pilha
+typedef struct
 {
     Item *Topo;
 } Pilha;
@@ -23,5 +23,7 @@ void empilhar(Pilha *p, float chave);
 float desempilhar(Pilha *p);
 float topo(Pilha *p);
 void liberarPilha(Pilha *p);
+float aplicarFuncao(char *funcao, Pilha *p);
+char *postFixToInfix(char entrada[]);
 
 #endif // PILHA_H_INCLUDED
