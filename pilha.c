@@ -80,65 +80,86 @@ void liberarPilha(Pilha *p)
     free(p);
 }
 
-float aplicarFuncao(char* funcao, float operando) {
-    if (strcmp(funcao, "log") == 0) {
+float aplicarFuncao(char *funcao, float operando)
+{
+    if (strcmp(funcao, "log") == 0)
+    {
         return (float)log10(operando);
-    } else if (strcmp(funcao, "sen") == 0) {
+    }
+    else if (strcmp(funcao, "sen") == 0)
+    {
         return (float)sin(operando);
-    } else if (strcmp(funcao, "cos") == 0) {
+    }
+    else if (strcmp(funcao, "cos") == 0)
+    {
         return (float)cos(operando);
-    } else if (strcmp(funcao, "tan") == 0) {
+    }
+    else if (strcmp(funcao, "tan") == 0)
+    {
         return (float)tan(operando);
-    } else {
+    }
+    else
+    {
         printf("Função desconhecida: %s\n", funcao);
         exit(1);
     }
 }
 
-char* postFixToInfix(char entrada[]) {
+char *postFixToInfix(char entrada[])
+{
     Pilha *temp = criarPilha();
-    char* saida = (char*)malloc(100 * sizeof(char));
-    char funcao2[4];
+    char *saida = (char *)malloc(100 * sizeof(char));
 
-    if (saida == NULL) {
+    if (saida == NULL)
+    {
         fprintf(stderr, "Memory allocation failed\n");
         exit(EXIT_FAILURE);
     }
 
-    saida[0] = '\0';  // Initialize the string
+    saida[0] = '\0'; // Inicialize a string
 
-    for (int i = 0; entrada[i] != '\0'; i++) {
-        if (isdigit(entrada[i]) || (entrada[i] == '.' && isdigit(entrada[i + 1]))) {
+    for (int i = 0; entrada[i] != '\0'; i++)
+    {
+        if (isdigit(entrada[i]) || (entrada[i] == '.' && isdigit(entrada[i + 1])))
+        {
             double operando = strtod(&entrada[i], NULL);
-            while (isdigit(entrada[i]) || entrada[i] == '.') {
+            while (isdigit(entrada[i]) || entrada[i] == '.')
+            {
                 i++;
             }
             empilhar(temp, operando);
-        } else if (isalpha(entrada[i])) {
+
+            char temporaria[100];
+            sprintf(temporaria, "%.2f ", operando);
+            strcat(saida, temporaria);
+        }
+        else if (isalpha(entrada[i]))
+        {
             char funcao[4] = {0};
             int j = 0;
-            while (isalpha(entrada[i]) && j < 3) {
+            while (isalpha(entrada[i]) && j < 3)
+            {
                 funcao[j++] = entrada[i++];
             }
             char temporaria[100];
-            sprintf(temporaria, " %s(%.2f)", funcao, desempilhar(temp));
-            strcpy(funcao2, temporaria);
-        } else if (entrada[i] == '+' || entrada[i] == '-' || entrada[i] == '*' || entrada[i] == '/' || entrada[i] == '^') {
-            char temporario2[100];
-            
-            if(isalpha(entrada[i - 2])){
-                sprintf(temporario2, "%s %c %s", saida, entrada[i], funcao2);
-                strcpy(saida, temporario2);
-                continue;
-            }
-            
+            sprintf(temporaria, "%s(%.2f) ", funcao, desempilhar(temp));
+            strcat(saida, temporaria);
+        }
+        else if (entrada[i] == '+' || entrada[i] == '-' || entrada[i] == '*' || entrada[i] == '/' || entrada[i] == '^')
+        {
             float operando2 = desempilhar(temp);
             float operando1 = desempilhar(temp);
-            
-            sprintf(temporario2, " (%.2f %c %.2f)", operando1, entrada[i], operando2);
+
+            char temporario2[100];
+            sprintf(temporario2, "(%.2f %c %.2f) ", operando1, entrada[i], operando2);
             strcat(saida, temporario2);
+
+            empilhar(temp, operando1);
+            empilhar(temp, operando2);
         }
     }
+
+    liberarPilha(temp);
 
     return saida;
 }
